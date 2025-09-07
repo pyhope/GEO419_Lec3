@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -e
+
+module purge
+module load intel-oneapi/2024.2 intel-mpi/oneapi/2021.13 intel-mkl/2024.2
+
+cp /path/to/your/vasp.6.3.2.tgz .
+tar -zxvf vasp.6.3.2.tgz
+cd vasp.6.3.2
+
+cat > makefile.include << 'EOF'
+
+# Default precompiler options
+CPP_OPTIONS = -DHOST=\"LinuxIFC\" \
+              -DMPI -DMPI_BLOCK=8000 -Duse_collective \
+              -DscaLAPACK \
+              -DCACHE_SIZE=4000 \
+              -Davoidalloc \
+              -Dvasp6 \
+              -Duse_bse_te \
+              -Dtbdyn \
+              -Dfock_dblbuf \
+              -D_OPENMP
+CPP         = fpp -f_com=no -free -w0  $*$(FUFFIX) $*$(SUFFIX) $(CPP_OPTIONS)
+FC          = mpiifx -qopenmp
+FCL         = mpiifx
+FREE        = -free -names lowercase
+FFLAGS      = -assume byterecl -w
+OFLAG       = -O2
+OFLAG_IN    = $(OFLAG)
+DEBUG       = -O0
+OBJECTS     = fftmpiw.o fftmpi_map.o fftw3d.o fft3dlib.o
+OBJECTS_O1 += fftw3d.o fftmpi.o fftmpiw.o
+OBJECTS_O2 += fft3dlib.o
+# For what used to be vasp.5.lib
+CPP_LIB     = $(CPP)
+FC_LIB      = $(FC)
+CC_LIB      = icx
+CFLAGS_LIB  = -O
+FFLAGS_LIB  = -O1
+FREE_LIB    = $(FREE)
+OBJECTS_LIB = linpack_double.o
+# For the parser library
+CXX_PARS    = icpx
+LLIBS       = -lstdc++
+##
+## Customize as of this point! Of course you may change the preceding
+## part of this file as well if you like, but it should rarely be
+## necessary ...
+##
+# When compiling on the target machine itself, change this to the
+# relevant target when cross-compiling for another architecture
+VASP_TARGET_CPU ?= -xHOST
+FFLAGS     += $(VASP_TARGET_CPU)
+# Intel MKL (FFTW, BLAS, LAPACK, and scaLAPACK)
+# (Note: for Intel Parallel Studio's MKL use -mkl instead of -qmkl)
+FCL        += -qmkl
+MKLROOT    ?= /opt/intel/oneapi/mkl/2024.2
+LLIBS      += -L$(MKLROOT)/lib -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64
+INCS        =-I$(MKLROOT)/include/fftw
+
+EOF
+
+make DEPS=1 -j16 std
+make DEPS=1 -j16 gam
