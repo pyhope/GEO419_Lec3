@@ -9,6 +9,8 @@ cp /path/to/your/vasp.6.3.2.zip .
 unzip vasp.6.3.2.zip
 cd vasp.6.3.2
 
+SOFTWARE_DIR=$(pwd)
+
 cat > makefile.include << 'EOF'
 
 # Default precompiler options
@@ -64,3 +66,5 @@ EOF
 
 make DEPS=1 -j4 std
 make DEPS=1 -j4 gam
+
+echo "export PATH=$SOFTWARE_DIR/bin/:\$PATH" >> ~/.bashrc
