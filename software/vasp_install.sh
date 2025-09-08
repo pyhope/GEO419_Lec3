@@ -62,5 +62,5 @@ INCS        =-I$(MKLROOT)/include/fftw
 
 EOF
 
-make DEPS=1 -j16 std
-make DEPS=1 -j16 gam
+make DEPS=1 -j4 std
+make DEPS=1 -j4 gam
