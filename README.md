@@ -41,7 +41,7 @@ Then edit **line 8** to replace:
 /path/to/your/vasp.6.3.2.zip
 ```
 
-with the **absolute path** to the VASP zip file you uploaded (available from the course Canvas under Files).
+with the **absolute path** to the VASP zip file you uploaded to Adroit (available from the course Canvas under Files). Remember the path should point to the file on Adroit, not on your local computer.
 
 ---
 
