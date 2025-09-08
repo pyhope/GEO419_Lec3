@@ -7,7 +7,7 @@
 #SBATCH --time=02:00:00      # total run time limit (HH:MM:SS)
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-export PATH=$PATH:/scratch/network/your_netid/software/vasp.6.3.2/bin
+export PATH=$PATH:/path/to/your/vasp.6.3.2/bin
 
 module purge
 module load intel-oneapi/2024.2 intel-mpi/oneapi/2021.13 intel-mkl/2024.2
