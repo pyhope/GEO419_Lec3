@@ -12,6 +12,6 @@ export TF_INTER_OP_PARALLELISM_THREADS=1
 
 module purge
 module load anaconda3/2024.10
-conda activate /path/to/your/deepmd
+conda activate /path/to/your/deepmd-kit
 
 srun --mpi=pmix lmp -in in.lammps
