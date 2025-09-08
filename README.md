@@ -1,4 +1,4 @@
-# GEO 419: A Practical Guide to Atomistic Modeling  
+# GEO 421: A Practical Guide to Atomistic Modeling  
 **Lecture 3 Repository**
 
 **Instructor:** Prof. Jie Deng  
