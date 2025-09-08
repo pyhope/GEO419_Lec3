@@ -5,8 +5,8 @@ set -e
 module purge
 module load intel-oneapi/2024.2 intel-mpi/oneapi/2021.13 intel-mkl/2024.2
 
-cp /path/to/your/vasp.6.3.2.tgz .
-tar -zxvf vasp.6.3.2.tgz
+cp /path/to/your/vasp.6.3.2.zip .
+unzip vasp.6.3.2.zip
 cd vasp.6.3.2
 
 cat > makefile.include << 'EOF'
